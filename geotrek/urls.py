@@ -40,10 +40,5 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 )
 
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
-    urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

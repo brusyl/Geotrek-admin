@@ -18,10 +18,6 @@ INSTALLED_APPS = (
     'django_extensions',
 ) + INSTALLED_APPS
 
-MIDDLEWARE_CLASSES = (
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
-) + MIDDLEWARE_CLASSES
-
 INTERNAL_IPS = (
     '127.0.0.1',  # localhost default
     '10.0.3.1',  # lxc default
@@ -43,4 +39,3 @@ LOGGING['loggers']['geotrek']['level'] = 'DEBUG'
 LOGGING['loggers']['']['level'] = 'DEBUG'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEBUG_TOOLBAR_PATCH_SETTINGS = False

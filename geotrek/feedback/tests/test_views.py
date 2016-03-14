@@ -11,7 +11,7 @@ from mapentity.factories import SuperUserFactory, UserFactory
 from geotrek.common.tests import CommonTest, TranslationResetMixin
 from geotrek.feedback import models as feedback_models
 from geotrek.feedback import factories as feedback_factories
-from rest_framework.test import APIRequestFactory, force_authenticate, APIClient
+from rest_framework.test import APIClient
 
 
 class ReportViewsetMailSend(TestCase):

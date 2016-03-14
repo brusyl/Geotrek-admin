@@ -8,7 +8,6 @@ urlpatterns = patterns(
     '',
     url(r'^api/(?P<lang>\w+)/feedback/categories.json$', CategoryList.as_view(), name="categories_json"),
     url(r'^api/(?P<lang>\w+)/reports/report$', ReportViewSet.as_view({'post': 'create', }), name="report-add"),
-    #url(r'^api/(?P<lang>\w+)/reports$', ReportViewSet.as_view({'get': 'list', }), name="report-list"),
 )
 
 urlpatterns += registry.register(feedback_models.Report)
