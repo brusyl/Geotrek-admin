@@ -19,7 +19,7 @@ class DataSourceFactory(factory.Factory):
     title = factory.Sequence(lambda n: u"DataSource %s" % n)
     url = factory.Sequence(lambda n: u"http://%s.com" % n)
     type = models.DATA_SOURCE_TYPES.GEOJSON
-    pictogram = get_dummy_uploaded_image()
+    pictogram = u"{}".format(get_dummy_uploaded_image())
 
 
 class InformationDeskTypeFactory(factory.Factory):
@@ -38,9 +38,9 @@ class InformationDeskFactory(factory.Factory):
     phone = factory.Sequence(lambda n: u"01 02 03 %s" % n)
     email = factory.Sequence(lambda n: u"email-%s@makina-corpus.com" % n)
     website = factory.Sequence(lambda n: u"http://makina-corpus.com/%s" % n)
-    photo = dummy_filefield_as_sequence('photo %s')
+    photo = dummy_filefield_as_sequence(u'photo %s')
     street = factory.Sequence(lambda n: u"%s baker street" % n)
-    postal_code = '28300'
+    postal_code = u'28300'
     municipality = factory.Sequence(lambda n: u"Bailleau L'évêque-%s" % n)
     geom = Point(3.14, 42)
 
@@ -51,7 +51,7 @@ class TouristicContentCategoryFactory(factory.Factory):
     label = factory.Sequence(lambda n: u"Category %s" % n)
     type1_label = factory.Sequence(lambda n: u"Type1_label %s" % n)
     # Keep type2_label with default value
-    pictogram = dummy_filefield_as_sequence('thumbnail %s')
+    pictogram = dummy_filefield_as_sequence(u'thumbnail %s')
 
 
 class TouristicContentTypeFactory(factory.Factory):
@@ -59,7 +59,7 @@ class TouristicContentTypeFactory(factory.Factory):
 
     label = factory.Sequence(lambda n: u"Type %s" % n)
     category = factory.SubFactory(TouristicContentCategoryFactory)
-    pictogram = dummy_filefield_as_sequence('thumbnail %s')
+    pictogram = dummy_filefield_as_sequence(u'thumbnail %s')
     in_list = 1
 
 
@@ -77,14 +77,14 @@ class TouristicContentFactory(StructureRelatedDefaultFactory):
     geom = 'POINT(0 0)'
     published = True
     reservation_system = factory.SubFactory(ReservationSystemFactory)
-    reservation_id = 'XXXXXXXXX'
+    reservation_id = u'XXXXXXXXX'
 
 
 class TouristicEventTypeFactory(factory.Factory):
     FACTORY_FOR = models.TouristicEventType
 
     type = factory.Sequence(lambda n: u"Type %s" % n)
-    pictogram = dummy_filefield_as_sequence('thumbnail %s')
+    pictogram = dummy_filefield_as_sequence(u'thumbnail %s')
 
 
 class TouristicEventFactory(factory.Factory):
@@ -108,7 +108,7 @@ class TrekWithTouristicEventFactory(TrekFactory):
 
         if create:
             for lang in settings.MODELTRANSLATION_LANGUAGES:
-                setattr(trek, 'published_{}'.format(lang), True)
+                setattr(trek, u'published_{}'.format(lang), True)
             trek.save()
 
         return trek
@@ -125,7 +125,7 @@ class TrekWithTouristicContentFactory(TrekFactory):
 
         if create:
             for lang in settings.MODELTRANSLATION_LANGUAGES:
-                setattr(trek, 'published_{}'.format(lang), True)
+                setattr(trek, u'published_{}'.format(lang), True)
             trek.save()
 
         return trek

@@ -14,9 +14,9 @@ class FlatPageViewSet(viewsets.ModelViewSet):
     """
     A viewset for viewing and editing flat pages instances.
     """
-    model = flatpages_models.FlatPage
     serializer_class = FlatPageSerializer
     permission_classes = [rest_permissions.DjangoModelPermissionsOrAnonReadOnly]
+    queryset = flatpages_models.FlatPage.objects.filter(published=True)
 
     def get_queryset(self):
         qs = flatpages_models.FlatPage.objects.filter(published=True)

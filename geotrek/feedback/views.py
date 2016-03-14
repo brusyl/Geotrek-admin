@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.views.generic.list import ListView
 from django.core.mail import send_mail
-from rest_framework.decorators import list_route
 from rest_framework.permissions import AllowAny
 from mapentity import views as mapentity_views
 
@@ -39,19 +38,19 @@ class CategoryList(mapentity_views.JSONResponseMixin, ListView):
 
 class ReportViewSet(mapentity_views.MapEntityViewSet):
     """Disable permissions requirement"""
-    model = feedback_models.Report
     serializer_class = feedback_serializers.ReportSerializer
     authentication_classes = []
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny, ]
+    queryset = feedback_models.Report.objects.all()
 
-    @list_route(methods=['post'])
-    def report(self, request, lang=None):
-        response = super(ReportViewSet, self).create(request)
+    def create(self, request, *args, **kwargs):
+        response = mapentity_views.MapEntityViewSet.create(self, request, *args, **kwargs)
+
         if settings.MAILALERTSUBJECT and response.status_code == 201:
             send_mail(
                 settings.MAILALERTSUBJECT,
                 settings.MAILALERTMESSAGE,
                 settings.DEFAULT_FROM_EMAIL,
-                [request.DATA.get('email')]
+                [request.data.get('email')]
             )
         return response

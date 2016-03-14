@@ -11,6 +11,7 @@ from mapentity.factories import SuperUserFactory, UserFactory
 from geotrek.common.tests import CommonTest, TranslationResetMixin
 from geotrek.feedback import models as feedback_models
 from geotrek.feedback import factories as feedback_factories
+from rest_framework.test import APIRequestFactory, force_authenticate, APIClient
 
 
 class ReportViewsetMailSend(TestCase):
@@ -50,22 +51,11 @@ class BaseAPITest(TestCase):
         perm = Permission.objects.get_by_natural_key('add_report', 'feedback', 'report')
         self.user.user_permissions.add(perm)
 
-        self.login_url = '/login/'
-
-    def login(self):
-        response = self.client.get(self.login_url)
-        csrftoken = response.cookies.get('csrftoken', '')
-        response = self.client.post(self.login_url,
-                                    {'username': self.user.username,
-                                     'password': 'booh',
-                                     'csrfmiddlewaretoken': csrftoken},
-                                    allow_redirects=False)
-        self.assertEqual(response.status_code, 302)
-
 
 class CreateReportsAPITest(BaseAPITest):
     def setUp(self):
         super(CreateReportsAPITest, self).setUp()
+
         self.add_url = '/api/en/reports/report'
         self.data = {
             'geom': '{"type": "Point", "coordinates": [3, 46.5]}',
@@ -74,8 +64,10 @@ class CreateReportsAPITest(BaseAPITest):
         }
 
     def post_report_data(self, data):
-        response = self.client.post(self.add_url, data=data,
-                                    allow_redirects=False)
+        client_api = APIClient()
+        response = client_api.post(self.add_url,
+                                   self.data,
+                                   format='json')
         self.assertEqual(response.status_code, 201)
 
     def test_reports_can_be_created_using_post(self):

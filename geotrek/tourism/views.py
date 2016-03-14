@@ -310,6 +310,8 @@ class InformationDeskViewSet(viewsets.ModelViewSet):
     model = InformationDesk
     permission_classes = [rest_permissions.DjangoModelPermissionsOrAnonReadOnly]
 
+    queryset = InformationDesk.objects.all().transform(settings.API_SRID, field_name='geom')
+
     def get_serializer_class(self):
         class Serializer(InformationDeskSerializer, GeoFeatureModelSerializer):
             pass

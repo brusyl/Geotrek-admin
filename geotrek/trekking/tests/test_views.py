@@ -437,6 +437,7 @@ class TrekJSONDetailTest(TrekkingManagerTest):
     """
 
     def setUp(self):
+        self.maxDiff = None
         self.login()
 
         polygon = 'SRID=%s;MULTIPOLYGON(((0 0, 0 3, 3 3, 3 0, 0 0)))' % settings.SRID

@@ -426,7 +426,9 @@ class BasicJSONAPITest(TranslationResetMixin):
             u'type': {
                 u'id': self.poi.type.id,
                 u'label': self.poi.type.label,
-                u'pictogram': os.path.join(settings.MEDIA_URL, self.poi.type.pictogram.name)}})
+                u'pictogram': os.path.join(settings.MEDIA_URL, self.poi.type.pictogram.name)
+            }
+        })
 
     def test_sources(self):
         self.assertDictEqual(self.result['source'][0], {
@@ -458,7 +460,7 @@ class TouristicContentAPITest(BasicJSONAPITest, TrekkingManagerTest):
             'published', 'published_status', 'reservation_id', 'reservation_system',
             'slug', 'source', 'themes', 'thumbnail', 'touristic_contents',
             'touristic_events', 'treks', 'type1', 'type2', 'videos', 'website', ]),
-            sorted(self.result.keys()))
+            sorted(self.result.keys()), '/api/en/{model}s/{pk}.json'.format(model=self.content._meta.module_name, pk=self.pk))
 
     def test_type1(self):
         self.assertDictEqual(self.result['type1'][0],
@@ -499,7 +501,7 @@ class TouristicEventAPITest(BasicJSONAPITest, TrekkingManagerTest):
             'slug', 'source', 'speaker', 'target_audience', 'themes', 'thumbnail',
             'touristic_contents', 'touristic_events', 'treks', 'type',
             'type1', 'videos', 'website'],
-            sorted(self.result.keys()))
+            sorted(self.result.keys()), '/api/en/{model}s/{pk}.json'.format(model=self.content._meta.module_name, pk=self.pk))
 
     def test_type(self):
         self.assertDictEqual(self.result['type'],

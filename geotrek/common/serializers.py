@@ -6,6 +6,7 @@ from rest_framework import serializers as rest_serializers
 from rest_framework import serializers as rest_fields
 
 from .models import Theme, RecordSource
+from geotrek.common.mixins import PictogramMixin
 
 
 class TranslatedModelSerializer(rest_serializers.ModelSerializer):
@@ -22,32 +23,34 @@ class TranslatedModelSerializer(rest_serializers.ModelSerializer):
 
 
 class PictogramSerializerMixin(rest_serializers.ModelSerializer):
-    pictogram = rest_serializers.Field('get_pictogram_url')
+    pictogram = rest_serializers.SerializerMethodField()
+
+    def get_pictogram(self, obj):
+        return obj.get_pictogram_url
+
+    class Meta:
+        model = PictogramMixin
+        fields = ('pictogram', )
 
 
 class PicturesSerializerMixin(rest_serializers.ModelSerializer):
-    thumbnail = rest_serializers.Field(source='serializable_thumbnail')
-    pictures = rest_serializers.Field(source='serializable_pictures')
-    videos = rest_serializers.Field(source='serializable_videos')
-    files = rest_serializers.Field(source='serializable_files')
+    thumbnail = rest_serializers.ReadOnlyField(source='serializable_thumbnail')
+    pictures = rest_serializers.ReadOnlyField(source='serializable_pictures')
+    videos = rest_serializers.ReadOnlyField(source='serializable_videos')
+    files = rest_serializers.ReadOnlyField(source='serializable_files')
 
     class Meta:
         fields = ('thumbnail', 'pictures', 'videos', 'files')
 
 
 class BasePublishableSerializerMixin(rest_serializers.ModelSerializer):
-    published_status = rest_serializers.Field(source='published_status')
-
     class Meta:
         fields = ('published', 'published_status', 'publication_date',)
 
 
 class PublishableSerializerMixin(BasePublishableSerializerMixin):
-    slug = rest_serializers.Field(source='slug')
-
-    map_image_url = rest_serializers.Field(source='map_image_url')
-    printable = rest_serializers.SerializerMethodField('get_printable_url')
-    filelist_url = rest_serializers.SerializerMethodField('get_filelist_url')
+    printable = rest_serializers.SerializerMethodField(method_name='get_printable_url')
+    filelist_url = rest_serializers.SerializerMethodField()
 
     def get_printable_url(self, obj):
         appname = obj._meta.app_label
@@ -67,13 +70,23 @@ class PublishableSerializerMixin(BasePublishableSerializerMixin):
             BasePublishableSerializerMixin.Meta.fields
 
 
-class ThemeSerializer(PictogramSerializerMixin, TranslatedModelSerializer):
+class ThemeSerializer(TranslatedModelSerializer):
+    pictogram = rest_serializers.SerializerMethodField()
+
+    def get_pictogram(self, obj):
+        return obj.get_pictogram_url
+
     class Meta:
         model = Theme
         fields = ('id', 'pictogram', 'label')
 
 
-class RecordSourceSerializer(PictogramSerializerMixin, rest_serializers.ModelSerializer):
+class RecordSourceSerializer(rest_serializers.ModelSerializer):
+    pictogram = rest_serializers.SerializerMethodField()
+
+    def get_pictogram(self, obj):
+        return obj.get_pictogram_url
+
     class Meta:
         model = RecordSource
         fields = ('name', 'website', 'pictogram')

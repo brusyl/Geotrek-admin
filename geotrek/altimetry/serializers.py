@@ -6,9 +6,9 @@ from geotrek.core.models import AltimetryMixin
 
 
 class AltimetrySerializerMixin(rest_serializers.ModelSerializer):
-    elevation_area_url = rest_serializers.SerializerMethodField('get_elevation_area_url')
-    elevation_svg_url = rest_serializers.SerializerMethodField('get_elevation_svg_url')
-    altimetric_profile = rest_serializers.SerializerMethodField('get_altimetric_profile_url')
+    elevation_area_url = rest_serializers.SerializerMethodField()
+    elevation_svg_url = rest_serializers.SerializerMethodField()
+    altimetric_profile = rest_serializers.SerializerMethodField(method_name='get_altimetric_profile_url')
 
     class Meta:
         fields = ('elevation_area_url', 'elevation_svg_url', 'altimetric_profile') + (

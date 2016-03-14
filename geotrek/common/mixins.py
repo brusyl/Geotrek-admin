@@ -380,8 +380,9 @@ class PictogramMixin(models.Model):
     pictogram_img.short_description = _("Pictogram")
     pictogram_img.allow_tags = True
 
+    @property
     def get_pictogram_url(self):
-        return self.pictogram.url if self.pictogram else None
+        return u"{}".format(self.pictogram.url) if self.pictogram else None
 
 
 class OptionalPictogramMixin(PictogramMixin):
