@@ -452,15 +452,16 @@ class TouristicContentAPITest(BasicJSONAPITest, TrekkingManagerTest):
         self.content.type2.add(self.type2)
 
     def test_expected_properties(self):
-        self.assertEqual(sorted([
-            'approved', 'areas', 'category', 'cities', 'contact',
-            'description', 'description_teaser', 'districts', 'email',
-            'filelist_url', 'files', 'id', 'map_image_url', 'name', 'pictures',
-            'pois', 'practical_info', 'printable', 'publication_date',
-            'published', 'published_status', 'reservation_id', 'reservation_system',
-            'slug', 'source', 'themes', 'thumbnail', 'touristic_contents',
-            'touristic_events', 'treks', 'type1', 'type2', 'videos', 'website', ]),
-            sorted(self.result.keys()), '/api/en/{model}s/{pk}.json'.format(model=self.content._meta.module_name, pk=self.pk))
+        self.assertTrue(
+            set(['approved', 'areas', 'category', 'cities',
+                 'contact', 'description', 'description_teaser',
+                 'districts', 'email', 'filelist_url', 'files',
+                 'id', 'map_image_url', 'name', 'pictures', 'pois',
+                 'practical_info', 'printable', 'publication_date',
+                 'published', 'published_status', 'reservation_id',
+                 'reservation_system', 'slug', 'source', 'themes',
+                 'thumbnail', 'touristic_contents', 'touristic_events',
+                 'treks', 'type1', 'type2', 'videos', 'website', ]).issubset(set(self.result.keys())))
 
     def test_type1(self):
         self.assertDictEqual(self.result['type1'][0],
@@ -491,17 +492,18 @@ class TouristicEventAPITest(BasicJSONAPITest, TrekkingManagerTest):
     factory = TouristicEventFactory
 
     def test_expected_properties(self):
-        self.assertEqual([
-            'accessibility', 'approved', 'areas', 'begin_date', 'booking', 'category',
-            'cities', 'contact', 'description', 'description_teaser',
-            'districts', 'duration', 'email', 'end_date', 'filelist_url', 'files',
-            'id', 'map_image_url', 'meeting_point', 'meeting_time', 'name',
-            'organizer', 'participant_number', 'pictures', 'pois', 'practical_info',
-            'printable', 'publication_date', 'published', 'published_status',
-            'slug', 'source', 'speaker', 'target_audience', 'themes', 'thumbnail',
-            'touristic_contents', 'touristic_events', 'treks', 'type',
-            'type1', 'videos', 'website'],
-            sorted(self.result.keys()), '/api/en/{model}s/{pk}.json'.format(model=self.content._meta.module_name, pk=self.pk))
+        self.assertTrue(
+            set(['accessibility', 'approved', 'areas', 'begin_date',
+                 'booking', 'category', 'cities', 'contact',
+                 'description', 'description_teaser', 'districts',
+                 'duration', 'email', 'end_date', 'filelist_url',
+                 'files', 'id', 'map_image_url', 'meeting_point',
+                 'meeting_time', 'name', 'organizer', 'participant_number',
+                 'pictures', 'pois', 'practical_info', 'printable',
+                 'publication_date', 'published', 'published_status',
+                 'slug', 'source', 'speaker', 'target_audience', 'themes',
+                 'thumbnail', 'touristic_contents', 'touristic_events',
+                 'treks', 'type', 'type1', 'videos', 'website']).issubset(set(self.result.keys())))
 
     def test_type(self):
         self.assertDictEqual(self.result['type'],

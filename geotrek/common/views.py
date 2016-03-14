@@ -314,6 +314,7 @@ def import_update_json(request):
 class ThemeViewSet(viewsets.ModelViewSet):
     permission_classes = [rest_permissions.DjangoModelPermissionsOrAnonReadOnly]
     serializer_class = ThemeSerializer
+    queryset = Theme.objects.all()
 
     def get_queryset(self):
         qs = super(ThemeViewSet, self).get_queryset()

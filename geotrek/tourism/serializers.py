@@ -9,6 +9,7 @@ from geotrek.common.serializers import (ThemeSerializer, PublishableSerializerMi
 from geotrek.zoning.serializers import ZoningSerializerMixin
 from geotrek.trekking import serializers as trekking_serializers
 from geotrek.tourism import models as tourism_models
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 
 class InformationDeskTypeSerializer(PictogramSerializerMixin, TranslatedModelSerializer):
@@ -17,7 +18,7 @@ class InformationDeskTypeSerializer(PictogramSerializerMixin, TranslatedModelSer
         fields = ('id', 'pictogram', 'label')
 
 
-class InformationDeskSerializer(TranslatedModelSerializer):
+class InformationDeskSerializer(TranslatedModelSerializer, GeoFeatureModelSerializer):
     type = InformationDeskTypeSerializer()
 
     class Meta:

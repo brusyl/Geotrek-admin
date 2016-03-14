@@ -621,7 +621,7 @@ class TrekJSONDetailTest(TrekkingManagerTest):
 
     def test_information_desks(self):
         desk_type = self.information_desk.type
-        self.assertDictEqual(self.result['information_desks'][0],
+        self.assertDictEqual(self.result['information_desks']['features'][0]['properties'],
                              {u'description': self.information_desk.description,
                               u'email': self.information_desk.email,
                               u'latitude': self.information_desk.latitude,
@@ -636,7 +636,8 @@ class TrekJSONDetailTest(TrekkingManagerTest):
                               u'type': {
                                   u'id': desk_type.id,
                                   u'pictogram': desk_type.pictogram.url,
-                                  u'label': desk_type.label}})
+                                  u'label': desk_type.label, }
+                              })
 
     def test_relationships(self):
         self.assertDictEqual(self.result['relationships'][0],
