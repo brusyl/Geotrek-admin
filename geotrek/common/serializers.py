@@ -26,7 +26,7 @@ class PictogramSerializerMixin(rest_serializers.ModelSerializer):
     pictogram = rest_serializers.SerializerMethodField()
 
     def get_pictogram(self, obj):
-        return obj.get_pictogram_url
+        return obj.get_pictogram_url()
 
     class Meta:
         model = PictogramMixin
@@ -74,7 +74,7 @@ class ThemeSerializer(TranslatedModelSerializer):
     pictogram = rest_serializers.SerializerMethodField()
 
     def get_pictogram(self, obj):
-        return obj.get_pictogram_url
+        return obj.get_pictogram_url()
 
     class Meta:
         model = Theme
@@ -85,7 +85,7 @@ class RecordSourceSerializer(rest_serializers.ModelSerializer):
     pictogram = rest_serializers.SerializerMethodField()
 
     def get_pictogram(self, obj):
-        return obj.get_pictogram_url
+        return obj.get_pictogram_url()
 
     class Meta:
         model = RecordSource
