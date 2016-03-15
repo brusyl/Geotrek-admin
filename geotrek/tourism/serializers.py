@@ -18,7 +18,7 @@ class InformationDeskTypeSerializer(PictogramSerializerMixin, TranslatedModelSer
         fields = ('id', 'pictogram', 'label')
 
 
-class InformationDeskSerializer(TranslatedModelSerializer, GeoFeatureModelSerializer):
+class InformationDeskSerializer(TranslatedModelSerializer):
     type = InformationDeskTypeSerializer()
 
     class Meta:
@@ -27,6 +27,10 @@ class InformationDeskSerializer(TranslatedModelSerializer, GeoFeatureModelSerial
         fields = ('name', 'description', 'phone', 'email', 'website',
                   'photo_url', 'street', 'postal_code', 'municipality',
                   'latitude', 'longitude', 'type', 'geom')
+
+
+class GeoInformationDeskSerializer(InformationDeskSerializer, GeoFeatureModelSerializer):
+    pass
 
 
 class CloseTouristicContentSerializer(TranslatedModelSerializer):

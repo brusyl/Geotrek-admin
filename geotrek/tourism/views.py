@@ -38,7 +38,7 @@ from .helpers import post_process
 from .models import (TouristicContent, TouristicEvent, TouristicContentCategory,
                      DataSource, InformationDesk)
 from .serializers import (TouristicContentSerializer, TouristicEventSerializer,
-                          InformationDeskSerializer)
+                          GeoInformationDeskSerializer)
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
@@ -309,7 +309,7 @@ class TouristicEventViewSet(MapEntityViewSet):
 class InformationDeskViewSet(viewsets.ModelViewSet):
     model = InformationDesk
     permission_classes = [rest_permissions.DjangoModelPermissionsOrAnonReadOnly]
-    serializer_class = InformationDeskSerializer
+    serializer_class = GeoInformationDeskSerializer
     queryset = InformationDesk.objects.all().transform(settings.API_SRID, field_name='geom')
 
     def get_queryset(self):
@@ -323,7 +323,7 @@ class InformationDeskViewSet(viewsets.ModelViewSet):
 class TrekInformationDeskViewSet(viewsets.ModelViewSet):
     model = InformationDesk
     permission_classes = [rest_permissions.DjangoModelPermissionsOrAnonReadOnly]
-    serializer_class = InformationDeskSerializer
+    serializer_class = GeoInformationDeskSerializer
 
     def get_queryset(self):
         pk = self.kwargs['pk']
