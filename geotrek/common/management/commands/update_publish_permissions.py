@@ -23,12 +23,13 @@ class Command(BaseCommand):
     def execute(self, *args, **options):
         logger.info("Synchronize django permissions")
 
-        for app in get_apps():
-            create_permissions(app, [], int(options.get('verbosity', 1)))
+        #for app in get_apps():
+        #    print app
+        #    create_permissions(app, [], int(options.get('verbosity', 1)))
 
-        logger.info("Done.")
+        #logger.info("Done.")
 
-        logger.info("Synchronize mapentity permissions")
+        #logger.info("Synchronize mapentity permissions")
 
         # Make sure apps are registered at this point
         import_module(settings.ROOT_URLCONF)
@@ -40,7 +41,7 @@ class Command(BaseCommand):
         logger.info("Done.")
 
         logger.info("Synchronize geotrek permissions")
-
+        """
         for content_type in ContentType.objects.all():
             model = content_type.model_class()
             if model and issubclass(model, BasePublishableMixin):
@@ -48,5 +49,5 @@ class Command(BaseCommand):
                     codename='publish_%s' % content_type.model,
                     name='Can publish %s' % content_type.name,
                     content_type=content_type)
-
+"""
         logger.info("Done.")

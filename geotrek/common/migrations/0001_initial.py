@@ -1,53 +1,80 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-from south.db import db
-from south.v2 import SchemaMigration
+from django.db import migrations, models
+import geotrek.authent.models
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Organism'
-        db.create_table('m_b_organisme', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('structure', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['authent.Structure'], db_column='structure')),
-            ('organism', self.gf('django.db.models.fields.CharField')(max_length=128, db_column='organisme')),
-        ))
-        db.send_create_signal(u'common', ['Organism'])
+    dependencies = [
+        ('authent', '0001_initial'),
+        ('cirkwi', '0001_initial'),
+    ]
 
-        # Adding model 'FileType'
-        db.create_table('fl_b_fichier', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=128)),
-            ('structure', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['authent.Structure'], db_column='structure')),
-        ))
-        db.send_create_signal(u'common', ['FileType'])
-
-    def backwards(self, orm):
-        # Deleting model 'Organism'
-        db.delete_table('m_b_organisme')
-
-        # Deleting model 'FileType'
-        db.delete_table('fl_b_fichier')
-
-    models = {
-        u'authent.structure': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Structure'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '256'})
-        },
-        u'common.filetype': {
-            'Meta': {'ordering': "['type']", 'object_name': 'FileType', 'db_table': "'fl_b_fichier'"},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'structure': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['authent.Structure']", 'db_column': "'structure'"}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '128'})
-        },
-        u'common.organism': {
-            'Meta': {'ordering': "['organism']", 'object_name': 'Organism', 'db_table': "'m_b_organisme'"},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'organism': ('django.db.models.fields.CharField', [], {'max_length': '128', 'db_column': "'organisme'"}),
-            'structure': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['authent.Structure']", 'db_column': "'structure'"})
-        }
-    }
-
-    complete_apps = ['common']
+    operations = [
+        migrations.CreateModel(
+            name='FileType',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('type', models.CharField(max_length=128, verbose_name='File type')),
+                ('structure', models.ForeignKey(db_column=b'structure', default=geotrek.authent.models.default_structure, verbose_name='Related structure', to='authent.Structure')),
+            ],
+            options={
+                'ordering': ['type'],
+                'abstract': False,
+                'db_table': 'fl_b_fichier',
+                'verbose_name': 'File type',
+                'verbose_name_plural': 'File types',
+            },
+        ),
+        migrations.CreateModel(
+            name='Organism',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('organism', models.CharField(max_length=128, verbose_name='Organism', db_column=b'organisme')),
+                ('structure', models.ForeignKey(db_column=b'structure', default=geotrek.authent.models.default_structure, verbose_name='Related structure', to='authent.Structure')),
+            ],
+            options={
+                'ordering': ['organism'],
+                'db_table': 'm_b_organisme',
+                'verbose_name': 'Organism',
+                'verbose_name_plural': 'Organisms',
+            },
+        ),
+        migrations.CreateModel(
+            name='RecordSource',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('pictogram', models.FileField(db_column=b'picto', upload_to=b'upload', max_length=512, blank=True, null=True, verbose_name='Pictogram')),
+                ('name', models.CharField(max_length=50, verbose_name='Name')),
+                ('website', models.URLField(max_length=256, null=True, verbose_name='Website', db_column=b'website', blank=True)),
+                ('structure', models.ForeignKey(db_column=b'structure', default=geotrek.authent.models.default_structure, verbose_name='Related structure', to='authent.Structure')),
+            ],
+            options={
+                'ordering': ['name'],
+                'db_table': 'o_b_source_fiche',
+                'verbose_name': 'Record source',
+                'verbose_name_plural': 'Record sources',
+            },
+        ),
+        migrations.CreateModel(
+            name='Theme',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('pictogram', models.FileField(max_length=512, null=True, verbose_name='Pictogram', db_column=b'picto', upload_to=b'upload')),
+                ('label', models.CharField(max_length=128, verbose_name='Label', db_column=b'theme')),
+                ('label_en', models.CharField(max_length=128, null=True, verbose_name='Label', db_column=b'theme_en')),
+                ('label_es', models.CharField(max_length=128, null=True, verbose_name='Label', db_column=b'theme_es')),
+                ('label_fr', models.CharField(max_length=128, null=True, verbose_name='Label', db_column=b'theme_fr')),
+                ('label_it', models.CharField(max_length=128, null=True, verbose_name='Label', db_column=b'theme_it')),
+                ('cirkwi', models.ForeignKey(verbose_name='Cirkwi tag', blank=True, to='cirkwi.CirkwiTag', null=True)),
+            ],
+            options={
+                'ordering': ['label'],
+                'db_table': 'o_b_theme',
+                'verbose_name': 'Theme',
+                'verbose_name_plural': 'Themes',
+            },
+        ),
+    ]
