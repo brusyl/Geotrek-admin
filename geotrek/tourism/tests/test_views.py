@@ -336,7 +336,7 @@ class BasicJSONAPITest(TranslationResetMixin):
         self._build_object()
 
         self.pk = self.content.pk
-        url = '/api/en/{model}s/{pk}.json'.format(model=self.content._meta.module_name, pk=self.pk)
+        url = '/api/en/{model}s/{pk}.json'.format(model=self.content._meta.model_name, pk=self.pk)
         self.response = self.client.get(url)
         self.result = json.loads(self.response.content)
 

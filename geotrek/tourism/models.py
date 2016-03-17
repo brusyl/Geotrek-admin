@@ -295,7 +295,7 @@ class TouristicContent(AddPropertyMixin, PublishableMixin, MapEntityMixin, Struc
     description = models.TextField(verbose_name=_(u"Description"), blank=True, db_column='description',
                                    help_text=_(u"Complete description"))
     themes = models.ManyToManyField(Theme, related_name="touristiccontents",
-                                    db_table="t_r_contenu_touristique_theme", blank=True, null=True, verbose_name=_(u"Themes"),
+                                    db_table="t_r_contenu_touristique_theme", blank=True, verbose_name=_(u"Themes"),
                                     help_text=_(u"Main theme(s)"))
     geom = models.GeometryField(verbose_name=_(u"Location"), srid=settings.SRID)
     category = models.ForeignKey(TouristicContentCategory, related_name='contents',
@@ -315,7 +315,7 @@ class TouristicContent(AddPropertyMixin, PublishableMixin, MapEntityMixin, Struc
                                    verbose_name=_(u"Type 2"), db_table="t_r_contenu_touristique_type2",
                                    blank=True)
     source = models.ManyToManyField('common.RecordSource',
-                                    null=True, blank=True, related_name='touristiccontents',
+                                    blank=True, related_name='touristiccontents',
                                     verbose_name=_("Source"), db_table='t_r_contenu_touristique_source')
     eid = models.CharField(verbose_name=_(u"External id"), max_length=128, blank=True, null=True, db_column='id_externe')
     reservation_system = models.ForeignKey(ReservationSystem, verbose_name=_(u"Reservation system"),
@@ -330,6 +330,7 @@ class TouristicContent(AddPropertyMixin, PublishableMixin, MapEntityMixin, Struc
         db_table = 't_t_contenu_touristique'
         verbose_name = _(u"Touristic content")
         verbose_name_plural = _(u"Touristic contents")
+        permissions = ((u'publish_touristiccontent', u'Can publish touristiccontent'),)
 
     def __unicode__(self):
         return self.name
@@ -409,7 +410,7 @@ class TouristicEvent(AddPropertyMixin, PublishableMixin, MapEntityMixin, Structu
     description = models.TextField(verbose_name=_(u"Description"), blank=True, db_column='description',
                                    help_text=_(u"Complete description"))
     themes = models.ManyToManyField(Theme, related_name="touristic_events",
-                                    db_table="t_r_evenement_touristique_theme", blank=True, null=True, verbose_name=_(u"Themes"),
+                                    db_table="t_r_evenement_touristique_theme", blank=True, verbose_name=_(u"Themes"),
                                     help_text=_(u"Main theme(s)"))
     geom = models.PointField(verbose_name=_(u"Location"), srid=settings.SRID)
     begin_date = models.DateField(blank=True, null=True, verbose_name=_(u"Begin date"), db_column='date_debut')
@@ -435,7 +436,7 @@ class TouristicEvent(AddPropertyMixin, PublishableMixin, MapEntityMixin, Structu
     practical_info = models.TextField(verbose_name=_(u"Practical info"), blank=True, db_column='infos_pratiques',
                                       help_text=_(u"Recommandations / To plan / Advices"))
     source = models.ManyToManyField('common.RecordSource',
-                                    null=True, blank=True, related_name='touristicevents',
+                                    blank=True, related_name='touristicevents',
                                     verbose_name=_("Source"), db_table='t_r_evenement_touristique_source')
     eid = models.CharField(verbose_name=_(u"External id"), max_length=128, blank=True, null=True, db_column='id_externe')
     approved = models.BooleanField(verbose_name=_(u"Approved"), default=False, db_column='labellise')
@@ -449,6 +450,7 @@ class TouristicEvent(AddPropertyMixin, PublishableMixin, MapEntityMixin, Structu
         verbose_name = _(u"Touristic event")
         verbose_name_plural = _(u"Touristic events")
         ordering = ['-begin_date']
+        permissions = ((u'publish_touristicevent', u'Can publish touristicevent'),)
 
     def __unicode__(self):
         return self.name

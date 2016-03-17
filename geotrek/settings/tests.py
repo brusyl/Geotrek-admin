@@ -6,13 +6,11 @@ from .default import *  # NOQA
 
 TEST = True
 
-TEST_EXCLUDE = ('django',)
+TEST_EXCLUDE = ('django', 'mapentity')
 
 LOGGING['handlers']['console']['level'] = 'CRITICAL'
 
 LANGUAGE_CODE = 'en'
-
-SOUTH_TESTS_MIGRATE = False
 
 MAPENTITY_CONFIG['MAPENTITY_WEASYPRINT'] = False
 

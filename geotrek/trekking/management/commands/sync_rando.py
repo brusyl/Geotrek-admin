@@ -179,7 +179,10 @@ class Command(BaseCommand):
                 self.stdout.write(u"\x1b[3D\x1b[31;1mfailed (HTTP {code})\x1b[0m".format(code=response.status_code))
             return
         f = open(fullname, 'w')
-        f.write(response.content)
+        if getattr(response, 'content', None):
+            f.write(response.content)
+        elif getattr(response, 'streaming_content', None):
+            f.write(str(response.streaming_content))
         f.close()
         if zipfile:
             zipfile.write(fullname, name)

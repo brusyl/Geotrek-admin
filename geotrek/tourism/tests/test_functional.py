@@ -28,7 +28,7 @@ class TouristicContentViewsTests(CommonTest):
         return {
             'name_fr': u'test',
             'category': TouristicContentCategoryFactory.create().pk,
-            'structure': default_structure().pk,
+            'structure': default_structure(),
             'geom': '{"type": "Point", "coordinates":[0, 0]}',
         }
 
@@ -46,6 +46,6 @@ class TouristicEventViewsTests(CommonTest):
     def get_good_data(self):
         return {
             'name_fr': u'test',
-            'structure': default_structure().pk,
+            'structure': default_structure(),
             'geom': '{"type": "Point", "coordinates":[0, 0]}',
         }

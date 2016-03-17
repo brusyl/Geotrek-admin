@@ -29,9 +29,13 @@ class Structure(models.Model):
         permissions = (("can_bypass_structure", _("Can bypass structure")),)
 
 
+def default_structure_instance():
+    return Structure.objects.get_or_create(name=settings.DEFAULT_STRUCTURE_NAME)[0]
+
+
 def default_structure():
     """ Create default structure if necessary """
-    return Structure.objects.get_or_create(name=settings.DEFAULT_STRUCTURE_NAME)[0]
+    return default_structure_instance().pk
 
 
 class StructureRelatedQuerySet(models.query.QuerySet):
@@ -57,7 +61,8 @@ class StructureRelated(models.Model):
     """
     A mixin used for any entities that belong to a structure
     """
-    structure = models.ForeignKey(Structure, default=default_structure,
+    structure = models.ForeignKey(Structure,
+                                  default=default_structure,
                                   verbose_name=_(u"Related structure"), db_column='structure')
 
     objects = models.Manager()

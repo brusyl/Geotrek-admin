@@ -49,7 +49,7 @@ class StructureRelatedDefaultFactory(factory.Factory):
     """Use the default structure"""
     FACTORY_FOR = core_models.StructureRelated
 
-    structure = factory.LazyAttribute(lambda _: core_models.default_structure())
+    structure = factory.LazyAttribute(lambda _: core_models.default_structure_instance())
 
 
 class UserProfileFactory(StructureRelatedDefaultFactory):

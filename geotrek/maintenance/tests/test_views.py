@@ -45,7 +45,7 @@ class InterventionViewsTest(CommonTest):
         return {
             'name': 'test',
             'date': '2012-08-23',
-            'structure': default_structure().pk,
+            'structure': default_structure(),
             'disorders': InterventionDisorderFactory.create().pk,
             'comments': '',
             'slope': 0,
@@ -222,7 +222,7 @@ class ProjectViewsTest(CommonTest):
     def get_good_data(self):
         return {
             'name': 'test',
-            'structure': default_structure().pk,
+            'structure': default_structure(),
             'stake': '',
             'type': '',
             'domain': '',

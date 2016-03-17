@@ -108,7 +108,7 @@ update:
 	bin/django syncdb --noinput --migrate
 	bin/django sync_translation_fields --noinput
 	bin/django update_translation_fields
-	bin/django update_permissions
+	bin/django update_publish_permissions
 	make all_compilemessages
 
 deploy: update
@@ -125,6 +125,7 @@ all_compilemessages:
 
 load_data:
 	# /!\ will delete existing data
+	bin/django update_publish_permissions
 	bin/django loaddata minimal
 	bin/django loaddata cirkwi
 	bin/django loaddata basic

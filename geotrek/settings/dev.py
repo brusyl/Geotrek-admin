@@ -5,9 +5,7 @@ from .default import *  # NOQA
 # ..........................
 
 DEBUG = True
-TEMPLATE_DEBUG = True
-
-SOUTH_TESTS_MIGRATE = False  # Tested at settings.tests
+TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 #
 # Developper additions

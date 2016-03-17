@@ -45,7 +45,7 @@ class InfrastructureViewsTest(CommonTest):
         return {
             'name': 'test',
             'description': 'oh',
-            'structure': default_structure().pk,
+            'structure': default_structure(),
             'type': InfrastructureTypeFactory.create(type=INFRASTRUCTURE_TYPES.BUILDING).pk,
             'condition': InfrastructureConditionFactory.create().pk,
             'topology': '{"paths": [%s]}' % path.pk,
@@ -64,7 +64,7 @@ class PointInfrastructureViewsTest(InfrastructureViewsTest):
         return {
             'name': 'test',
             'description': 'oh',
-            'structure': default_structure().pk,
+            'structure': default_structure(),
             'type': InfrastructureTypeFactory.create(type=INFRASTRUCTURE_TYPES.BUILDING).pk,
             'condition': InfrastructureConditionFactory.create().pk,
             'topology': '{"lat": 0.42, "lng": 0.666}'

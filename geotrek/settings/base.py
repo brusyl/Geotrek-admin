@@ -11,9 +11,10 @@ from . import PROJECT_ROOT_PATH
 def gettext_noop(s):
     return s
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
+
 TEST = 'test' in sys.argv
 VERSION = __version__
 
@@ -48,7 +49,6 @@ DATABASE_SCHEMAS = {
     'auth': 'django',
     'django': 'django',
     'easy_thumbnails': 'django',
-    'south': 'django',
     'feedback': 'gestion',
     'infrastructure': 'gestion',
     'maintenance': 'gestion',
@@ -172,17 +172,37 @@ COMPRESS_PARSER = 'compressor.parser.HtmlParser'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'public_key'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    'geotrek.templateloaders.Loader',
-    # 'django.template.loaders.eggs.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.template.context_processors.request',
+                'django.contrib.messages.context_processors.messages',
+                'geotrek.context_processors.forced_layers',
+                'mapentity.context_processors.settings',
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+                'geotrek.templateloaders.Loader',
+                # 'django.template.loaders.eggs.Loader',
+            ],
+            'debug': DEBUG,
+        },
+    },
+]
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'geotrek.authent.middleware.LocaleForcedMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'geotrek.common.middleware.APILocaleMiddleware',
@@ -200,51 +220,18 @@ ROOT_URLCONF = 'geotrek.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'geotrek.wsgi.application'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
-    'geotrek.context_processors.forced_layers',
-
-    'mapentity.context_processors.settings',
-)
-
-#
-# /!\ Application names (last levels) must be unique
-# (c.f. auth/authent)
-# https://code.djangoproject.com/ticket/12288
-#
-PROJECT_APPS = (
+INSTALLED_APPS = (
+    'modeltranslation',
+    'mapentity',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
     'django.contrib.gis',
-)
-
-
-# Do not migrate translated fields, they differ per instance, and
-# can be added/removed using `update_translation_fields`
-if 'schemamigration' not in sys.argv:
-    PROJECT_APPS += ('modeltranslation',)
-
-
-PROJECT_APPS += (
-    'south',
     'leaflet',
     'floppyforms',
     'crispy_forms',
@@ -254,14 +241,11 @@ PROJECT_APPS += (
     'easy_thumbnails',
     'shapes',
     'paperclip',
-    'mapentity',
+    ##
     'rest_framework',
+    'rest_framework_gis',
     'embed_video',
     'djcelery',
-)
-
-
-INSTALLED_APPS = PROJECT_APPS + (
     'geotrek.cirkwi',
     'geotrek.authent',
     'geotrek.common',
@@ -276,6 +260,12 @@ INSTALLED_APPS = PROJECT_APPS + (
     'geotrek.flatpages',
     'geotrek.feedback',
 )
+
+# Do not migrate translated fields, they differ per instance, and
+# can be added/removed using `update_translation_fields`
+#if 'makemigrations' not in sys.argv:
+#    INSTALLED_APPS = ('modeltranslation',) + PROJECT_APPS
+
 
 SERIALIZATION_MODULES = {
     'geojson': 'djgeojson.serializers'
@@ -333,11 +323,6 @@ LOGGING = {
             'propagate': False,
         },
         'django': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'south': {
             'handlers': ['console', 'mail_admins'],
             'level': 'ERROR',
             'propagate': False,
@@ -589,8 +574,3 @@ If true; displays the attached pois pictures in the Trek's geojson pictures prop
 In Geotrek Rando it enables correlated pictures to be displayed in the slideshow.
 '''
 TREK_WITH_POIS_PICTURES = False
-
-SOUTH_MIGRATION_MODULES = {
-    'easy_thumbnails': 'easy_thumbnails.south_migrations',
-    'djcelery': 'djcelery.south_migrations',
-}

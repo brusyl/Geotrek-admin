@@ -13,7 +13,7 @@ remains.
 
 http://south.aeracode.org/ticket/1247
 
-Installation script hangs on syncdb --migrate
+Installation script hangs on migrate
 ---------------------------------------------
 
 This command is in charge of changing the database schema [1].

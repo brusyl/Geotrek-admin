@@ -34,6 +34,9 @@ class TrekRelationshipForm(forms.ModelForm):
                                     'is_circuit_step',
                                     'DELETE')
 
+    class Meta:
+        fields = "__all__"
+
 TrekRelationshipFormSet = inlineformset_factory(Trek, Trek.related_treks.through,
                                                 form=TrekRelationshipForm, fk_name='trek_a',
                                                 extra=1)

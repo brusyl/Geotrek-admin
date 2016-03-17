@@ -83,35 +83,35 @@ class Trek(StructureRelated, PicturesMixin, PublishableMixin, MapEntityMixin, To
     advice = models.TextField(verbose_name=_(u"Advice"), blank=True, db_column='recommandation',
                               help_text=_(u"Risks, danger, best period, ..."))
     themes = models.ManyToManyField(Theme, related_name="treks",
-                                    db_table="o_r_itineraire_theme", blank=True, null=True, verbose_name=_(u"Themes"),
+                                    db_table="o_r_itineraire_theme", blank=True, verbose_name=_(u"Themes"),
                                     help_text=_(u"Main theme(s)"))
     networks = models.ManyToManyField('TrekNetwork', related_name="treks",
-                                      db_table="o_r_itineraire_reseau", blank=True, null=True, verbose_name=_(u"Networks"),
+                                      db_table="o_r_itineraire_reseau", blank=True, verbose_name=_(u"Networks"),
                                       help_text=_(u"Hiking networks"))
     practice = models.ForeignKey('Practice', related_name="treks",
                                  blank=True, null=True, verbose_name=_(u"Practice"), db_column='pratique')
     accessibilities = models.ManyToManyField('Accessibility', related_name="treks",
-                                             db_table="o_r_itineraire_accessibilite", blank=True, null=True,
+                                             db_table="o_r_itineraire_accessibilite", blank=True,
                                              verbose_name=_(u"Accessibility"))
     route = models.ForeignKey('Route', related_name='treks',
                               blank=True, null=True, verbose_name=_(u"Route"), db_column='parcours')
     difficulty = models.ForeignKey('DifficultyLevel', related_name='treks',
                                    blank=True, null=True, verbose_name=_(u"Difficulty"), db_column='difficulte')
     web_links = models.ManyToManyField('WebLink', related_name="treks",
-                                       db_table="o_r_itineraire_web", blank=True, null=True, verbose_name=_(u"Web links"),
+                                       db_table="o_r_itineraire_web", blank=True, verbose_name=_(u"Web links"),
                                        help_text=_(u"External resources"))
     related_treks = models.ManyToManyField('self', through='TrekRelationship',
                                            verbose_name=_(u"Related treks"), symmetrical=False,
                                            help_text=_(u"Connections between treks"),
                                            related_name='related_treks+')  # Hide reverse attribute
     information_desks = models.ManyToManyField(tourism_models.InformationDesk, related_name='treks',
-                                               db_table="o_r_itineraire_renseignement", blank=True, null=True,
+                                               db_table="o_r_itineraire_renseignement", blank=True,
                                                verbose_name=_(u"Information desks"),
                                                help_text=_(u"Where to obtain information"))
     points_reference = models.MultiPointField(verbose_name=_(u"Points of reference"), db_column='geom_points_reference',
                                               srid=settings.SRID, spatial_index=False, blank=True, null=True)
     source = models.ManyToManyField('common.RecordSource',
-                                    null=True, blank=True, related_name='treks',
+                                    blank=True, related_name='treks',
                                     verbose_name=_("Source"), db_table='o_r_itineraire_source')
     eid = models.CharField(verbose_name=_(u"External id"), max_length=128, blank=True, null=True, db_column='id_externe')
     eid2 = models.CharField(verbose_name=_(u"Second external id"), max_length=128, blank=True, null=True, db_column='id_externe2')
@@ -126,6 +126,7 @@ class Trek(StructureRelated, PicturesMixin, PublishableMixin, MapEntityMixin, To
         verbose_name = _(u"Trek")
         verbose_name_plural = _(u"Treks")
         ordering = ['name']
+        permissions = ((u'publish_trek', u'Can publish trek'),)
 
     def __unicode__(self):
         return self.name
@@ -138,7 +139,7 @@ class Trek(StructureRelated, PicturesMixin, PublishableMixin, MapEntityMixin, To
         basefolder = os.path.join(settings.MEDIA_ROOT, 'maps')
         if not os.path.exists(basefolder):
             os.makedirs(basefolder)
-        return os.path.join(basefolder, '%s-%s-%s.png' % (self._meta.module_name, self.pk, get_language()))
+        return os.path.join(basefolder, '%s-%s-%s.png' % (self._meta.model_name, self.pk, get_language()))
 
     @models.permalink
     def get_document_public_url(self):
@@ -590,6 +591,7 @@ class POI(StructureRelated, PicturesMixin, PublishableMixin, MapEntityMixin, Top
         db_table = 'o_t_poi'
         verbose_name = _(u"POI")
         verbose_name_plural = _(u"POI")
+        permissions = ((u'publish_poi', u'Can publish poi'),)
 
     # Override default manager
     objects = Topology.get_manager_cls(POIManager)()
@@ -670,7 +672,7 @@ class POIType(PictogramMixin):
 class ServiceType(PictogramMixin, PublishableMixin):
 
     practices = models.ManyToManyField('Practice', related_name="services",
-                                       db_table="o_r_service_pratique", blank=True, null=True,
+                                       db_table="o_r_service_pratique", blank=True,
                                        verbose_name=_(u"Practices"))
 
     class Meta:
@@ -678,6 +680,7 @@ class ServiceType(PictogramMixin, PublishableMixin):
         verbose_name = _(u"Service type")
         verbose_name_plural = _(u"Service types")
         ordering = ['name']
+        permissions = ((u'publish_servicetype', u'Can publish servicetype'),)
 
     def __unicode__(self):
         return self.name

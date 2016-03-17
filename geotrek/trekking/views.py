@@ -70,7 +70,7 @@ class FlattenPicturesMixin(object):
         https://code.djangoproject.com/ticket/17484
         """
         opts = self.get_model()._meta
-        extra = ["%s/%s%s.html" % (opts.app_label, opts.object_name.lower(), self.template_name_suffix)]
+        extra = ["%s/%s%s.html" % (opts.app_label, opts.model_name, self.template_name_suffix)]
         return extra + super(FlattenPicturesMixin, self).get_template_names()
 
     def get_queryset(self):
@@ -78,7 +78,7 @@ class FlattenPicturesMixin(object):
         It will fetch attachments, and force ``pictures`` attribute of instances.
         """
         app_label = self.get_model()._meta.app_label
-        model_name = self.get_model()._meta.object_name.lower()
+        model_name = self.get_model()._meta.model_name
         attachments = Attachment.objects.filter(content_type__app_label=app_label,
                                                 content_type__model=model_name)
         pictures = {}
@@ -128,7 +128,7 @@ class TrekGPXDetail(LastModifiedMixin, PublicOrReadPermMixin, BaseDetailView):
 
     def render_to_response(self, context):
         gpx_serializer = TrekGPXSerializer()
-        response = HttpResponse(mimetype='application/gpx+xml')
+        response = HttpResponse(content_type='application/gpx+xml')
         response['Content-Disposition'] = 'attachment; filename=%s.gpx' % self.get_object().slug
         gpx_serializer.serialize([self.get_object()], stream=response, geom_field='geom')
         return response

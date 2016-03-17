@@ -111,7 +111,7 @@ def move_models_to_schemas(app_label):
 
     table_schemas = {}
     for model in get_models(app):
-        model_name = model._meta.module_name
+        model_name = model._meta.model_name
         table_name = model._meta.db_table
         model_schema = settings.DATABASE_SCHEMAS.get(model_name, app_schema)
         table_schemas.setdefault(model_schema, []).append(table_name)

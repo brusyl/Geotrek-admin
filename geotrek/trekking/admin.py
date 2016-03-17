@@ -48,6 +48,9 @@ class DifficultyLevelForm(forms.ModelForm):
             raise ValidationError(_("Difficulty with id '%s' already exists") % self.newid)
         return self.newid
 
+    class Meta:
+        fields = "__all__"
+
 
 class DifficultyLevelAdmin(TranslationAdmin):
     form = DifficultyLevelForm

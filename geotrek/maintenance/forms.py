@@ -26,6 +26,9 @@ class ManDayForm(forms.ModelForm):
         self.fields['nb_days'].widget.attrs['class'] = 'input-mini'
         self.fields['job'].widget.attrs['class'] = 'input-medium'
 
+    class Meta:
+        fields = "__all__"
+
 
 ManDayFormSet = inlineformset_factory(Intervention, Intervention.jobs.through, form=ManDayForm, extra=1)
 
@@ -39,6 +42,8 @@ class FundingForm(forms.ModelForm):
         self.helper.layout = Layout('id', 'amount', 'organism')
         self.fields['organism'].widget.attrs['class'] = 'input-xlarge'
 
+    class Meta:
+        fields = "__all__"
 
 FundingFormSet = inlineformset_factory(Project, Project.founders.through, form=FundingForm, extra=1)
 

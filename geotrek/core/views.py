@@ -28,7 +28,7 @@ from .models import Path, Trail, Topology
 from .forms import PathForm, TrailForm
 from .filters import PathFilterSet, TrailFilterSet
 from . import graph as graph_lib
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.contrib import messages
 
 
@@ -275,7 +275,7 @@ def merge_path(request):
         except Exception as exc:
             response = {'error': exc, }
 
-    return HttpResponse(json.dumps(response), mimetype="application/json")
+    return JsonResponse(response)
 
 
 class ParametersView(View):
@@ -283,4 +283,4 @@ class ParametersView(View):
         response = {
             'geotrek_admin_version': settings.VERSION,
         }
-        return HttpResponse(json.dumps(response), mimetype="application/json")
+        return JsonResponse(response)

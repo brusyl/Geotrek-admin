@@ -97,7 +97,7 @@ class DocumentPublicBase(PublicOrReadPermMixin, mapentity_views.MapEntityDocumen
 
     def get_context_data(self, **kwargs):
         context = super(DocumentPublicBase, self).get_context_data(**kwargs)
-        modelname = self.get_model()._meta.object_name.lower()
+        modelname = self.get_model()._meta.model_name
         context['mapimage_ratio'] = settings.EXPORT_MAP_IMAGE_SIZE[modelname]
         return context
 
@@ -111,7 +111,7 @@ class DocumentPublicOdt(DocumentPublicBase):
         try:
             overriden = self.object.get_attachment_print()
             response = HttpResponse(
-                mimetype='application/vnd.oasis.opendocument.text')
+                content_type='application/vnd.oasis.opendocument.text')
             with open(overriden, 'rb') as f:
                 response.write(f.read())
             return response

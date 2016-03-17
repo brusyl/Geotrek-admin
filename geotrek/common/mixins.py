@@ -313,7 +313,7 @@ class PublishableMixin(BasePublishableMixin):
     def is_complete(self):
         """It should also have a description, etc.
         """
-        modelname = self.__class__._meta.object_name.lower()
+        modelname = self.__class__._meta.model_name
         mandatory = settings.COMPLETENESS_FIELDS.get(modelname, [])
         for f in mandatory:
             if not getattr(self, f):
@@ -350,7 +350,7 @@ class PublishableMixin(BasePublishableMixin):
         """ Force object aspect ratio to fit height and width of
         image in public document.
         """
-        modelname = self.__class__._meta.object_name.lower()
+        modelname = self.__class__._meta.model_name
         s = settings.EXPORT_MAP_IMAGE_SIZE[modelname]
         return float(s[0]) / s[1]
 

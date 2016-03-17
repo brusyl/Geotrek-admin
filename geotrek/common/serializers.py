@@ -54,13 +54,13 @@ class PublishableSerializerMixin(BasePublishableSerializerMixin):
 
     def get_printable_url(self, obj):
         appname = obj._meta.app_label
-        modelname = obj._meta.module_name
+        modelname = obj._meta.model_name
         return reverse('%s:%s_printable' % (appname, modelname),
                        kwargs={'lang': get_language(), 'pk': obj.pk, 'slug': obj.slug})
 
     def get_filelist_url(self, obj):
         appname = obj._meta.app_label
-        modelname = obj._meta.module_name
+        modelname = obj._meta.model_name
         return reverse('get_attachments', kwargs={'app_label': appname,
                                                   'module_name': modelname,
                                                   'pk': obj.pk})
