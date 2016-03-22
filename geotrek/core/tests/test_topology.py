@@ -744,16 +744,16 @@ class TopologySerialization(TestCase):
         # +|========>+
         topo = TopologyFactory.create(offset=1.0, no_path=True)
         topo.add_path(path)
-        test_objdict['pk'] = topo.pk
-        test_objdict['positions']['0'] = [0.0, 1.0]
+        test_objdict[u'pk'] = topo.pk
+        test_objdict[u'positions'][u'0'] = [0.0, 1.0]
         objdict = json.loads(topo.serialize())
         self.assertDictEqual(objdict[0], test_objdict)
 
         # +<========|+
         topo = TopologyFactory.create(offset=1.0, no_path=True)
         topo.add_path(path, start=1.0, end=0.0)
-        test_objdict['pk'] = topo.pk
-        test_objdict['positions']['0'] = [1.0, 0.0]
+        test_objdict[u'pk'] = topo.pk
+        test_objdict[u'positions'][u'0'] = [1.0, 0.0]
         objdict = json.loads(topo.serialize())
         self.assertDictEqual(objdict[0], test_objdict)
 
@@ -762,9 +762,9 @@ class TopologySerialization(TestCase):
         topo = TopologyFactory.create(offset=1.0, no_path=True)
         topo.add_path(path, start=0.0, end=1.0)
         topo.add_path(path2, start=1.0, end=0.0)
-        test_objdict['pk'] = topo.pk
-        test_objdict['paths'] = [path.pk, path2.pk]
-        test_objdict['positions'] = {'0': [0.0, 1.0], '1': [1.0, 0.0]}
+        test_objdict[u'pk'] = topo.pk
+        test_objdict[u'paths'] = [path.pk, path2.pk]
+        test_objdict[u'positions'] = {u'0': [0.0, 1.0], u'1': [1.0, 0.0]}
         objdict = json.loads(topo.serialize())
         self.assertDictEqual(objdict[0], test_objdict)
 
@@ -772,9 +772,9 @@ class TopologySerialization(TestCase):
         topo = TopologyFactory.create(offset=1.0, no_path=True)
         topo.add_path(path, start=1.0, end=0.0)
         topo.add_path(path2, start=0.0, end=1.0)
-        test_objdict['pk'] = topo.pk
-        test_objdict['paths'] = [path.pk, path2.pk]
-        test_objdict['positions'] = {'0': [1.0, 0.0], '1': [0.0, 1.0]}
+        test_objdict[u'pk'] = topo.pk
+        test_objdict[u'paths'] = [path.pk, path2.pk]
+        test_objdict[u'positions'] = {u'0': [1.0, 0.0], u'1': [0.0, 1.0]}
         objdict = json.loads(topo.serialize())
         self.assertDictEqual(objdict[0], test_objdict)
 

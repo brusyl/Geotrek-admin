@@ -13,6 +13,7 @@ from geotrek.common.factories import RecordSourceFactory
 from geotrek.common.tests import TranslationResetMixin
 from geotrek.tourism.factories import (TouristicContentFactory, TouristicEventFactory,
                                        TrekWithTouristicEventFactory, TrekWithTouristicContentFactory)
+from geotrek.tourism.models import TouristicContent
 
 
 def factory(factory, source):
@@ -29,6 +30,7 @@ class SyncTest(TranslationResetMixin, TestCase):
         factory(TouristicContentFactory, source_b)
         factory(TouristicEventFactory, source_a)
         factory(TouristicEventFactory, source_b)
+
         with mock.patch('geotrek.tourism.models.TouristicContent.prepare_map_image'):
             with mock.patch('geotrek.tourism.models.TouristicEvent.prepare_map_image'):
                 management.call_command('sync_rando', settings.SYNC_RANDO_ROOT, url='http://localhost:8000',

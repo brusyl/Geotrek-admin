@@ -23,7 +23,7 @@ from django.utils.timezone import utc, make_aware
 #from django.utils.unittest import util as testutil
 
 from mapentity import app_settings
-#from mapentity.tests import MapEntityLiveTest
+from mapentity.tests import MapEntityLiveTest
 from mapentity.factories import SuperUserFactory
 
 from geotrek.authent.models import default_structure
@@ -46,10 +46,13 @@ from geotrek.tourism import factories as tourism_factories
 
 # Make sur to register Trek model
 from geotrek.trekking import urls  # NOQA
-from django.template import engines
-find_template = engines['django'].engine.find_template
 
 from .base import TrekkingManagerTest
+try:
+    from django.template.loader import find_template
+except:
+    from django.template import engines
+    find_template = engines['django'].engine.find_template
 
 
 class POIViewsTest(CommonTest):
@@ -279,11 +282,11 @@ class TrekViewsTest(CommonTest):
             self.assertEqual(response.status_code, 200)
 
 
-"""class TrekViewsLiveTest(MapEntityLiveTest):
+class TrekViewsLiveTest(MapEntityLiveTest):
     model = Trek
     modelfactory = TrekFactory
     userfactory = SuperUserFactory
-"""
+
 
 class TrekCustomViewTests(TrekkingManagerTest):
     def setUp(self):
@@ -403,7 +406,8 @@ class TrekCustomPublicViewTests(TrekkingManagerTest):
             raise IOError
 
         open_patched.side_effect = fake_exists
-        find_template('trekking/trek_public.odt')
+
+        find_template(u'trekking/trek_public.odt')
         open_patched.assert_called_with(overriden_template, 'rb')
 
     def test_profile_json(self):
@@ -655,12 +659,12 @@ class TrekJSONDetailTest(TrekkingManagerTest):
 
     def test_parking_location_in_wgs84(self):
         parking_location = self.result['parking_location']
-        self.assertEqual(parking_location[0], -1.3630812101179004)
+        self.assertAlmostEqual(parking_location[0], -1.3630812101179004)
 
     def test_points_reference_are_exported_in_wgs84(self):
         geojson = self.result['points_reference']
         self.assertEqual(geojson['type'], 'MultiPoint')
-        self.assertEqual(geojson['coordinates'][0][0], -1.3630812101179)
+        self.assertAlmostEqual(geojson['coordinates'][0][0], -1.3630812101179)
 
     def test_touristic_contents(self):
         self.assertEqual(len(self.result['touristic_contents']), 1)

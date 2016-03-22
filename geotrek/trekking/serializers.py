@@ -201,7 +201,7 @@ class TrekSerializer(PublishableSerializerMixin, PicturesSerializerMixin,
         if settings.SPLIT_TREKS_CATEGORIES_BY_ACCESSIBILITY:
             del self.fields['type2']
 
-        self.fields['information_desks'] = tourism_serializers.InformationDeskSerializer(many=True)
+        self.fields['information_desks'] = tourism_serializers.GeoInformationDeskSerializer(many=True)
         self.fields['touristic_contents'] = tourism_serializers.CloseTouristicContentSerializer(many=True, source='published_touristic_contents')
         self.fields['touristic_events'] = tourism_serializers.CloseTouristicEventSerializer(many=True, source='published_touristic_events')
 

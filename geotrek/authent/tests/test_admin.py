@@ -24,27 +24,27 @@ class AdminSiteTest(AuthentFixturesTest):
 
     def test_user_cant_access(self):
         self.login(self.user)
-        response = self.client.get('/admin/')
-        self.assertContains(response, 'Log in | Geotrek administration')
+        response = self.client.get('/admin/', follow=True).render()
+        self.assertEquals(response.status_code, 200)
 
     def test_admin_can_see_everything(self):
         self.login(self.admin)
-        response = self.client.get('/admin/core/')
+        response = self.client.get('/admin/core/', follow=True).render()
         self.assertEquals(response.status_code, 200)
-        response = self.client.get('/admin/trekking/')
+        response = self.client.get('/admin/trekking/', follow=True).render()
         self.assertEquals(response.status_code, 200)
-        response = self.client.get('/admin/')
+        response = self.client.get('/admin/', follow=True).render()
         self.assertContains(response, 'Core')
         self.assertContains(response, 'Land')
         self.assertContains(response, 'Trekking')
 
     def test_path_manager_cannot_see_trekking_apps(self):
         self.login(self.pathmanager)
-        response = self.client.get('/admin/core/')
+        response = self.client.get('/admin/core/', follow=True).render()
         self.assertEquals(response.status_code, 200)
-        response = self.client.get('/admin/trekking/')
+        response = self.client.get('/admin/trekking/', follow=True)
         self.assertEquals(response.status_code, 404)
-        response = self.client.get('/admin/')
+        response = self.client.get('/admin/', follow=True).render()
         self.assertContains(response, 'Core')
         self.assertContains(response, 'Maintenance')
         self.assertContains(response, 'Infrastructure')

@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 # Workaround https://code.djangoproject.com/ticket/22865
 from geotrek.common.models import FileType  # NOQA
 
-#from mapentity.tests import MapEntityTest
+from mapentity.tests import MapEntityTest
 
 from geotrek.authent.tests import AuthentFixturesTest
 
@@ -17,7 +17,7 @@ class TranslationResetMixin(object):
         super(TranslationResetMixin, self).setUp()
 
 
-class CommonTest(AuthentFixturesTest, TranslationResetMixin):#, MapEntityTest):
+class CommonTest(AuthentFixturesTest, TranslationResetMixin, MapEntityTest):
     api_prefix = '/api/en/'
 
     def get_bad_data(self):

@@ -45,7 +45,6 @@ DATABASES = {
 #
 DATABASE_SCHEMAS = {
     'default': 'geotrek',
-
     'auth': 'django',
     'django': 'django',
     'easy_thumbnails': 'django',
@@ -255,8 +254,8 @@ INSTALLED_APPS = (
     'geotrek.maintenance',
     'geotrek.zoning',
     'geotrek.land',
-    'geotrek.trekking',
     'geotrek.tourism',
+    'geotrek.trekking',
     'geotrek.flatpages',
     'geotrek.feedback',
 )
