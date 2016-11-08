@@ -15,6 +15,7 @@ CHANGELOG
 
 * Upgrade mapentity (fix map centering in PDF exports)
 * Fix cirkwi export when trek geom is not a linestring
+* Fix HTML entities in feedback email
 
 
 2.11.2 (2016-09-15)
